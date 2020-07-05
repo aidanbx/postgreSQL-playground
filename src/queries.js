@@ -3,21 +3,21 @@ const { Pool, Client } = require('pg');
 const { request } = require('express');
 const pool = new Pool();
 
-const getTodos = (req, res) => {
+const getTodos = (request, response) => {
   pool.query('SELECT * FROM todos ORDER BY id ASC', (err, results) => {
     if (err) {
       throw err;
     }
-    res.header('Content-Type', 'text/json');
-    res.status(200).send(JSON.stringify(results.rows, null, 2));
+    // console.log(JSON.stringify(results.rows, null, 2));
+    response.status(200).send(JSON.stringify(results.rows, null, 2));
   });
 };
 
-const getTodoById = (req, res) => {
-  const id = parseInt(req.params.id);
+const getTodoById = (request, response) => {
+  const id = parseInt(request.params.id);
+
   if (Number.isNaN(id)) {
-    res.header('Content-Type', 'text/json');
-    res
+    response
       .status(400)
       .send(
         JSON.stringify(
@@ -27,39 +27,42 @@ const getTodoById = (req, res) => {
         )
       );
   } else {
-    pool.query('SELECT * FROM todos WHERE id= $1', [ id ], (err, results) => {
+    pool.query('SELECT * FROM todos WHERE id= $1', [ id ], (err, result) => {
       if (err) {
         throw err;
       }
-      res.header('Content-Type', 'text/json');
-      res.status(200).send(JSON.stringify(results.rows, null, 2));
+      response.status(200).send(JSON.stringify(result.rows[0], null, 2));
     });
   }
 };
 
-const createTodo = (req, res) => {
-  const { title, complete } = req.body;
+const createTodo = (request, response) => {
+  const { title, complete } = request.body;
 
   pool.query(
-    'INSERT INTO todos ( title, complete) VALUES ($1, $2)',
+    'INSERT INTO todos ( title, complete) VALUES ($1, $2) RETURNING id',
     [ title, complete ],
-    (err, results) => {
+    (err, result) => {
       if (err) {
         throw err;
       }
-      res.header('Content-Type', 'text/json');
-      res.status(201).send(`Todo added with ID: ${results.insertID}`);
+      newTodo = {
+        id        : result.rows[0].id,
+        title     : title,
+        completed : complete
+      };
+      // console.log(newTodo);
+      response.status(201).send(newTodo);
     }
   );
 };
 
-const updateTodo = (req, res) => {
-  const id = parseInt(req.params.id);
-  const { title, complete } = req.body;
+const updateTodo = (request, response) => {
+  const id = parseInt(request.params.id);
+  const { title, complete } = request.body;
 
   if (Number.isNaN(id)) {
-    res.header('Content-Type', 'text/json');
-    res
+    response
       .status(400)
       .send(
         JSON.stringify(
@@ -72,22 +75,21 @@ const updateTodo = (req, res) => {
     pool.query(
       'UPDATE todos SET title = $1, complete = $2 WHERE id = $3',
       [ title, complete, id ],
-      (err, results) => {
+      (err, result) => {
         if (err) {
           throw err;
         }
-        res.header('Content-Type', 'text/json');
-        res.status(200).send(`Todo updated with ID: ${id}`);
+        response.status(200).send(`Todo updated with ID: ${id}`);
       }
     );
   }
 };
 
-const deleteTodo = (req, res) => {
-  const id = parseInt(req.params.id);
+const deleteTodo = (request, response) => {
+  const id = parseInt(request.params.id);
+
   if (Number.isNaN(id)) {
-    res.header('Content-Type', 'text/json');
-    res
+    response
       .status(400)
       .send(
         JSON.stringify(
@@ -97,12 +99,12 @@ const deleteTodo = (req, res) => {
         )
       );
   } else {
-    pool.query('DELETE FROM todos WHERE id=$1', [ id ], (err, results) => {
+    pool.query('DELETE FROM todos WHERE id=$1', [ id ], (err, result) => {
       if (err) {
         throw err;
       }
-      res.header('Content-Type', 'text/json');
-      res.status(200).send(`Todo deleted with ID: ${id}`);
+      // console.log(`Todo deleted with ID: ${id}`);
+      response.status(200).send(`Todo deleted with ID: ${id}`);
     });
   }
 };
