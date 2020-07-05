@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'src')));
 
-app.get('/', (req, res) => {
+app.get('/api/', (req, res) => {
   res.send(
     JSON.stringify(
       {
@@ -51,11 +51,11 @@ app.get('/', (req, res) => {
   );
 });
 
-app.get('/todos', db.getTodos);
-app.get('/todos/:id', db.getTodoById);
-app.post('/todos', db.createTodo);
-app.put('/todos/:id', db.updateTodo);
-app.delete('/todos/:id', db.deleteTodo);
+app.get('/api/todos', db.getTodos);
+app.get('/api/todos/:id', db.getTodoById);
+app.post('/api/todos', db.createTodo);
+app.put('/api/todos/:id', db.updateTodo);
+app.delete('/api/todos/:id', db.deleteTodo);
 
 app.listen(process.env.PORT || 54321, () =>
   console.log(
