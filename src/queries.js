@@ -13,6 +13,16 @@ const getTodos = (req, res) => {
   });
 };
 
+const getTodos = (req, res) => {
+  pool.query('SELECT * FROM todos ORDER BY id ASC', (err, results) => {
+    if (err) {
+      throw err;
+    }
+    res.status(200);
+    res.send(JSON.stringify(results.rows, null, 2));
+  });
+};
+
 module.exports = {
   getTodos
 };

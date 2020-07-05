@@ -1,9 +1,9 @@
-# postgreSQL-playground
-
-
+# PostgreSQL-playground
+----
+----
 
 # Setup:
-
+---
 
 ## Install postgreSQL
 
@@ -71,3 +71,14 @@ PGPASSWORD=password
 PGDATABASE=database
 PGPORT=5432
 ```
+
+Reference Guides:
+----
+
+[Setting up a RESTful API with Node.js and PostgreSQL](https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/)
+
+[How to install PostgreSQL on Ubuntu 14.04](https://www.godaddy.com/garage/how-to-install-postgresql-on-ubuntu-14-04/)
+
+[PostgreSQL documentation](https://www.postgresql.org/docs/)
+
+[w3schools SQL tutorial](https://www.w3schools.com/sql/)
