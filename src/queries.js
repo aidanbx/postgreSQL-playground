@@ -4,7 +4,7 @@ const { request } = require('express');
 const pool = new Pool();
 
 const getTodos = (request, response) => {
-  pool.query('SELECT * FROM todos ORDER BY id ASC', (err, results) => {
+  pool.query('SELECT * FROM todolist ORDER BY id ASC', (err, results) => {
     if (err) {
       throw err;
     }
@@ -27,7 +27,7 @@ const getTodoById = (request, response) => {
         )
       );
   } else {
-    pool.query('SELECT * FROM todos WHERE id= $1', [ id ], (err, result) => {
+    pool.query('SELECT * FROM todolist WHERE id= $1', [ id ], (err, result) => {
       if (err) {
         throw err;
       }
@@ -40,7 +40,7 @@ const createTodo = (request, response) => {
   const { title, complete } = request.body;
 
   pool.query(
-    'INSERT INTO todos ( title, complete) VALUES ($1, $2) RETURNING id',
+    'INSERT INTO todolist ( title, complete) VALUES ($1, $2) RETURNING id',
     [ title, complete ],
     (err, result) => {
       if (err) {
@@ -73,7 +73,7 @@ const updateTodo = (request, response) => {
       );
   } else {
     pool.query(
-      'UPDATE todos SET title = $1, complete = $2 WHERE id = $3',
+      'UPDATE todolist SET title = $1, complete = $2 WHERE id = $3',
       [ title, complete, id ],
       (err, result) => {
         if (err) {
@@ -99,7 +99,7 @@ const deleteTodo = (request, response) => {
         )
       );
   } else {
-    pool.query('DELETE FROM todos WHERE id=$1', [ id ], (err, result) => {
+    pool.query('DELETE FROM todolist WHERE id=$1', [ id ], (err, result) => {
       if (err) {
         throw err;
       }
