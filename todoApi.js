@@ -14,17 +14,16 @@ if (dotenv.error) {
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended : true
+    extended: true
   })
 );
 
 app.use((req, res, next) => {
   res.set({
-    'Content-Type'                 : 'text/json',
-    'Access-Control-Allow-Origin'  : '*',
-    'Access-Control-Allow-Headers' :
-      'Origin, X-Requested-With, Content-Type, Accept',
-    'Access-Control-Allow-Methods' : 'GET, POST, OPTIONS, PUT, DELETE'
+    'Content-Type': 'text/json',
+    // 'Access-Control-Allow-Headers':
+    //   'Origin, X-Requested-With, Content-Type, Accept',
+    // 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
   });
   next();
 });
@@ -36,13 +35,13 @@ app.get('/api/', (req, res) => {
   res.send(
     JSON.stringify(
       {
-        info     : 'Todolist API',
-        commands : {
-          getTodos    : 'get /todos',
-          getTodoById : 'get /todos/:id',
-          createTodo  : 'post /todos',
-          updateTodo  : 'post /todos/:id',
-          deleteTodo  : 'delete /todos/:id'
+        info: 'Todolist API',
+        commands: {
+          getTodos: 'get /todos',
+          getTodoById: 'get /todos/:id',
+          createTodo: 'post /todos',
+          updateTodo: 'post /todos/:id',
+          deleteTodo: 'delete /todos/:id'
         }
       },
       null,
