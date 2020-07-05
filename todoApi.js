@@ -57,9 +57,9 @@ app.post('/todos', db.createTodo);
 app.put('/todos/:id', db.updateTodo);
 app.delete('/todos/:id', db.deleteTodo);
 
-app.listen(process.env.PORT || 8080, () =>
+app.listen(process.env.PORT || 54321, () =>
   console.log(
-    `Website running at http://${process.env.IP || 'localhost'}:${process.env
-      .PORT || '8080'}`
+    `todoApi running at http://${process.env.IP || 'localhost'}:${process.env
+      .PORT || '54321'}`
   )
 );
