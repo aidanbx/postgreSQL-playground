@@ -82,3 +82,5 @@ Reference Guides:
 [PostgreSQL documentation](https://www.postgresql.org/docs/)
 
 [w3schools SQL tutorial](https://www.w3schools.com/sql/)
+
+[PostgreSQL datatypes](https://www.guru99.com/postgresql-data-types.html)
