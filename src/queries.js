@@ -1,16 +1,21 @@
 require('dotenv').config();
 const { Pool, Client } = require('pg');
-const { request } = require('express');
 const pool = new Pool();
 
+const todoListTable = process.env.TODOLIST_TABLE || 'todolist';
+
 const getTodos = (request, response) => {
-  pool.query('SELECT * FROM todolist ORDER BY id ASC', (err, results) => {
-    if (err) {
-      throw err;
+  console.log(todoListTable);
+  pool.query(
+    `SELECT * FROM ${todoListTable} ORDER BY id ASC`,
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      // console.log(JSON.stringify(results.rows, null, 2));
+      response.status(200).send(JSON.stringify(results.rows, null, 2));
     }
-    // console.log(JSON.stringify(results.rows, null, 2));
-    response.status(200).send(JSON.stringify(results.rows, null, 2));
-  });
+  );
 };
 
 const getTodoById = (request, response) => {
@@ -27,12 +32,16 @@ const getTodoById = (request, response) => {
         )
       );
   } else {
-    pool.query('SELECT * FROM todolist WHERE id= $1', [ id ], (err, result) => {
-      if (err) {
-        throw err;
+    pool.query(
+      'SELECT * FROM $1 WHERE id= $2',
+      [ todoListTable, id ],
+      (err, result) => {
+        if (err) {
+          throw err;
+        }
+        response.status(200).send(JSON.stringify(result.rows[0], null, 2));
       }
-      response.status(200).send(JSON.stringify(result.rows[0], null, 2));
-    });
+    );
   }
 };
 
@@ -40,8 +49,8 @@ const createTodo = (request, response) => {
   const { title, complete } = request.body;
 
   pool.query(
-    'INSERT INTO todolist ( title, complete) VALUES ($1, $2) RETURNING id',
-    [ title, complete ],
+    'INSERT INTO $1 ( title, complete) VALUES ($2, $3) RETURNING id',
+    [ todoListTable, title, complete ],
     (err, result) => {
       if (err) {
         throw err;
@@ -73,8 +82,8 @@ const updateTodo = (request, response) => {
       );
   } else {
     pool.query(
-      'UPDATE todolist SET title = $1, complete = $2 WHERE id = $3',
-      [ title, complete, id ],
+      'UPDATE $1 SET title = $2, complete = $3 WHERE id = $4',
+      [ todoListTable, title, complete, id ],
       (err, result) => {
         if (err) {
           throw err;
@@ -99,13 +108,17 @@ const deleteTodo = (request, response) => {
         )
       );
   } else {
-    pool.query('DELETE FROM todolist WHERE id=$1', [ id ], (err, result) => {
-      if (err) {
-        throw err;
+    pool.query(
+      'DELETE FROM $1 WHERE id=$2',
+      [ todoListTable, id ],
+      (err, result) => {
+        if (err) {
+          throw err;
+        }
+        // console.log(`Todo deleted with ID: ${id}`);
+        response.status(200).send(`Todo deleted with ID: ${id}`);
       }
-      // console.log(`Todo deleted with ID: ${id}`);
-      response.status(200).send(`Todo deleted with ID: ${id}`);
-    });
+    );
   }
 };
 

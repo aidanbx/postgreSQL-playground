@@ -59,6 +59,16 @@ INSERT INTO users (name, email)
 SELECT * FROM users;
 ```
 
+Basic API testing with curl:
+-----
+
+```bash
+curl http://localhost:3000/users                                                          # GET request
+curl --data "name=Elaine&email=elaine@example.com" http://localhost:3000/users            # POST request
+curl -X PUT -d "name=Kramer" -d "email=kramer@example.com" http://localhost:3000/users/1  # Put request w id 1
+curl -X "DELETE" http://localhost:3000/users/1                                            # DELETE request with id 1
+```
+
 ## Template for environment variables in a .env file:
 
 ```python

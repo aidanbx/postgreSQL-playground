@@ -3,10 +3,8 @@ const { Pool, Client } = require('pg');
 const { request } = require('express');
 const pool = new Pool();
 
-const logRequest = () => {
+const logRequest = (req, res) => {};
 
+module.exports = {
+  logRequest
 };
-
-modulte.exports = {
-  logRequest,
-}
