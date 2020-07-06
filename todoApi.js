@@ -21,9 +21,10 @@ app.use(
 app.use((req, res, next) => {
   res.set({
     'Content-Type': 'text/json',
-    // 'Access-Control-Allow-Headers':
-    //   'Origin, X-Requested-With, Content-Type, Accept',
-    // 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
+    'Acces-Control-Allow-Origin': 'https://abarbieux.com',
+    'Access-Control-Allow-Headers':
+      'Origin, X-Requested-With, Content-Type, Accept',
+    'Access-Control-Allow-Methods': 'POST, PUT, DELETE'
   });
   next();
 });
@@ -40,7 +41,7 @@ app.get('/api/', (req, res) => {
           getTodos: 'get /todos',
           getTodoById: 'get /todos/:id',
           createTodo: 'post /todos',
-          updateTodo: 'post /todos/:id',
+          updateTodo: 'put /todos/:id',
           deleteTodo: 'delete /todos/:id'
         }
       },
