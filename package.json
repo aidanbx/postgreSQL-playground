@@ -1,10 +1,15 @@
 {
   "name": "postgreSQL-playground",
+  "jest": {
+    "verbose": true
+  },
   "version": "1.0.0",
   "description": "",
   "main": "todoApi.js",
   "scripts": {
-    "start": "node todoApi.js",
+    "start": "pm2 start server.js --name 'todoApi'",
+    "restart": "pm2 restart 'todoApi'",
+    "stop": "pm2 stop 'todoApi'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aidan Barbieux",
@@ -13,5 +18,9 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pg": "^8.2.1"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "supertest": "^4.0.2"
   }
 }
